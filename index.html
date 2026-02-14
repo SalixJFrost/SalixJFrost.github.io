@@ -996,6 +996,37 @@ body.dark .article pre {
     max-width: 100%;
   }
 }
+/* ========================================
+   TYPING ANIMATION
+   ======================================== */
+.typing-container {
+  display: inline-block;
+  min-width: 400px;
+}
+
+.typing-text {
+  display: inline-block;
+  border-right: 3px solid var(--text-primary);
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--text-primary); }
+}
+
+/* Responsive typing container */
+@media (max-width: 768px) {
+  .typing-container {
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .typing-container {
+    min-width: 200px;
+  }
+}
 </style>
 </head>
 
@@ -1013,7 +1044,7 @@ body.dark .article pre {
   <div class="nav-links">
     <a href="/" data-link aria-label="Navigate to home page">Home</a>
     <a href="/projects" data-link aria-label="Navigate to blog posts">Blog</a>
-    <a href="/about/" aria-label="Navigate to about page">About</a>
+    <a href="about/" aria-label="Navigate to about page">About</a>
     <div class="theme-toggle-wrapper">
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <span class="toggle-icon-sun"></span>
@@ -1035,7 +1066,11 @@ body.dark .article pre {
   <!-- Home Page -->
   <div id="home" class="page active" role="main">
     <div class="hero">
-      <h1>Clarity.<br>Precision.<br>Experience.</h1>
+      <h1>
+        <span class="typing-container">
+          <span id="typingText" class="typing-text"></span>
+        </span>
+      </h1>
       <p>Minimal · Development · Security</p>
     </div>
   </div>
@@ -1574,7 +1609,53 @@ if ('PerformanceObserver' in window) {
   }
 }
 
-console.log('✨ Website initialized with Classic iOS toggle');
+// ========================================
+// TYPING ANIMATION EFFECT
+// ========================================
+const words = ['Clarity.', 'Precision.', 'Experience.'];
+let wordIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingSpeed = 150;
+
+const typingElement = document.getElementById('typingText');
+
+function typeEffect() {
+  const currentWord = words[wordIndex];
+  
+  if (isDeleting) {
+    // Delete characters
+    typingElement.textContent = currentWord.substring(0, charIndex - 1);
+    charIndex--;
+    typingSpeed = 100; // Faster when deleting
+  } else {
+    // Type characters
+    typingElement.textContent = currentWord.substring(0, charIndex + 1);
+    charIndex++;
+    typingSpeed = 150; // Normal typing speed
+  }
+  
+  // Check if word is complete
+  if (!isDeleting && charIndex === currentWord.length) {
+    // Pause at end of word
+    typingSpeed = 2000; // 2 second pause
+    isDeleting = true;
+  } else if (isDeleting && charIndex === 0) {
+    // Move to next word
+    isDeleting = false;
+    wordIndex = (wordIndex + 1) % words.length; // Loop back to start
+    typingSpeed = 500; // Brief pause before next word
+  }
+  
+  setTimeout(typeEffect, typingSpeed);
+}
+
+// Start typing animation after page loads
+window.addEventListener('load', () => {
+  setTimeout(typeEffect, 500); // Start after 500ms delay
+});
+
+console.log('✨ Website initialized with Classic iOS toggle and typing animation');
 </script>
 
 </body>
