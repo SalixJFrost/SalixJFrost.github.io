@@ -1013,7 +1013,7 @@ body.dark .article pre {
   <div class="nav-links">
     <a href="/" data-link aria-label="Navigate to home page">Home</a>
     <a href="/projects" data-link aria-label="Navigate to blog posts">Blog</a>
-    <a href="/about" data-link aria-label="Navigate to about page">About</a>
+    <a href="/about/" aria-label="Navigate to about page">About</a>
     <div class="theme-toggle-wrapper">
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <span class="toggle-icon-sun"></span>
@@ -1057,14 +1057,7 @@ body.dark .article pre {
     <div class="grid" id="postList" role="list"></div>
   </div>
 
-  <!-- About Page -->
-  <div id="about" class="page" role="main">
-    <h1>About</h1>
-    <div class="about-content">
-      <p>专注系统架构与高质量软件开发。追求极致的用户体验与代码质量，致力于构建优雅、高效、可维护的技术解决方案。</p>
-      <p>在这里分享关于 Web 开发、系统设计和安全实践的思考与经验。</p>
-    </div>
-  </div>
+  <!-- About Page - Now separate at /about/index.html -->
 
   <!-- Article Page -->
   <div id="articlePage" class="page" role="main">
@@ -1206,13 +1199,12 @@ function router(path) {
   
   // Activate appropriate page
   let activePage = 'home';
-  if (path === '/about') {
-    activePage = 'about';
-  } else if (path === '/projects') {
+  if (path === '/projects') {
     activePage = 'projects';
   } else if (path.startsWith('/post')) {
     activePage = 'articlePage';
   }
+  // Note: /about is now a separate page, not handled by SPA router
   
   document.getElementById(activePage).classList.add('active');
   
@@ -1220,7 +1212,6 @@ function router(path) {
   const navMap = {
     'home': '/',
     'projects': '/projects',
-    'about': '/about',
     'articlePage': '/projects'
   };
   
@@ -1262,10 +1253,6 @@ function updateMetaTags(page) {
     projects: {
       title: 'Blog - SalixWen',
       description: 'Technical articles about web development, architecture, and security'
-    },
-    about: {
-      title: 'About - SalixWen',
-      description: 'Learn more about SalixWen and the technical blog'
     }
   };
   
